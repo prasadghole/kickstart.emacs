@@ -63,6 +63,7 @@
   (start/leader-keys
     "." '(find-file :wk "Find file")
     "TAB" '(comment-line :wk "Comment lines")
+    "SPC" '(consult-buffer :wk "Switch buffer")
     "p" '(projectile-command-map :wk "Projectile command map"))
 
   (start/leader-keys
@@ -76,7 +77,6 @@
 
   (start/leader-keys
     "b" '(:ignore t :wk "Buffer Bookmarks")
-    "b b" '(consult-buffer :wk "Switch buffer")
     "b k" '(kill-this-buffer :wk "Kill this buffer")
     "b i" '(ibuffer :wk "Ibuffer")
     "b n" '(next-buffer :wk "Next buffer")
@@ -120,13 +120,64 @@
   (start/leader-keys
     "r" '(:ignore t :wk "Org Roam")
     "r i" '(org-roam-node-insert :wk "Insert node")
+    "r t" '(org-roam-tag-add :wk "Insert tag")
+    "r d" '(org-roam-dailies-find-today :wk "dailies find today ")
+    "r D" '(org-roam-dailies-capture-today :wk "dailies caputure today ")
     "r f" '(org-roam-node-find :wk "Find node"))
 
   (start/leader-keys
         "c" '(:ignore t :wk "Org Clock")
         "c i" '(org-clock-in :wk "Clock in")
         "c o" '(org-clock-out :wk "Clock out")
-        "c g" '(org-clock-goto :wk "Clock goto")))
+        "c g" '(org-clock-goto :wk "Clock goto"))
+
+  (start/leader-keys
+    "a" '(:ignore t :wk "Agenda")
+    "a a" '(org-agenda :wk "Agenda")
+    "a t" '(org-todo-list :wk "Todo list")
+    "a m" '(org-tags-view :wk "Match tags")
+    "a s" '(org-search-view :wk "Search")
+    "a c" '(org-calendar-goto-agenda :wk "Calendar goto agenda")
+    "a n" '(org-agenda-next :wk "Next agenda item")
+    "a p" '(org-agenda-previous :wk "Previous agenda item")
+    "a r" '(org-agenda-redo :wk "Redo agenda")
+    "a g" '(org-agenda-goto :wk "Goto agenda item")
+    "a k" '(org-agenda-kill :wk "Kill agenda item")
+    "a x" '(org-agenda-exit :wk "Exit agenda")
+    "a w" '(org-agenda-write :wk "Write agenda")
+    "a o" '(org-agenda-open-link :wk "Open agenda link")
+    "a f" '(org-agenda-follow :wk "Follow agenda link")
+    "a d" '(org-agenda-deadline :wk "Set deadline")
+    "a S" '(org-agenda-schedule :wk "Schedule item")
+    "a T" '(org-agenda-todo :wk "Toggle todo")
+    "a P" '(org-agenda-priority :wk "Set priority")
+    "a A" '(org-agenda-archive :wk "Archive item")
+    "a C" '(org-agenda-clock-in :wk "Clock in")
+    "a O" '(org-agenda-clock-out :wk "Clock out")
+    "a R" '(org-agenda-refile :wk "Refile item")
+    "a B" '(org-agenda-bulk-action :wk "Bulk action")
+    "a L" '(org-agenda-log-mode :wk "Toggle log mode")
+    "a E" '(org-agenda-export :wk "Export agenda")
+    "a I" '(org-agenda-clock-in :wk "Clock in")
+    "a U" '(org-agenda-undo :wk "Undo agenda action")
+    "a V" '(org-agenda-view-mode-dispatch :wk "View mode dispatch")
+    "a Y" '(org-agenda-yank :wk "Yank agenda item")
+    "a Z" '(org-agenda-zoom :wk "Zoom agenda")
+    "a 1" '(org-agenda-day-view :wk "Day view")
+    "a 2" '(org-agenda-week-view :wk "Week view")
+    "a 3" '(org-agenda-month-view :wk "Month view")
+    "a 4" '(org-agenda-year-view :wk "Year view")
+    "a 5" '(org-agenda-custom-time :wk "Custom time")
+    "a 6" '(org-agenda-clock-report :wk "Clock report")
+    "a 7" '(org-agenda-timeline :wk "Timeline")
+    "a 8" '(org-agenda-todo-list :wk "Todo list")
+    "a 9" '(org-agenda-tags-view :wk "Tags view")
+    "a 0" '(org-agenda-reset-view :wk "Reset view")
+	)
+  )
+
+;; Set org-agenda-files to include all org files from org-roam directory recursively
+(setq org-agenda-files (directory-files-recursively "D:/Prasad/roam" "\\.org$"))
 
 (use-package emacs
       :custom
@@ -176,15 +227,19 @@
       )
 
 (use-package catppuccin-theme
-  :config
-  (load-theme 'catppuccin t)) ;; We need to add t to trust this package
+      :config
+      (load-theme 'catppuccin t)
+	  ;;:custom
+	  ;;(setq catppuccin-flavor 'frappe)
+) ;; We need to add t to trust this package
 
 (add-to-list 'default-frame-alist '(alpha-background . 90)) ;; For all new frames henceforth
 
 (set-face-attribute 'default nil
                     ;; :font "JetBrains Mono" ;; Set your favorite type of font or download JetBrains Mono
+					:font "cascadia mono"
                     :height 120
-                    :weight 'medium)
+                    :weight 'bold)
 ;; This sets the default font on all graphical frames created after restarting Emacs.
 ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
 ;; are not right unless I also add this method of setting the default font.
@@ -289,6 +344,7 @@
   :config
   (setq org-download-method 'directory)
   (setq org-download-image-dir  "d:/Prasad/roam/images")
+  (setq org-download-screenshot-method "powershell.exe -command \"Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.Clipboard]::GetImage().Save('%s')\"")
   (org-download-enable))
 
 (org-babel-do-load-languages
@@ -499,7 +555,7 @@
 ;;  - a list that can display an random banner,
 ;;    supported values are: string (filepath), 'official, 'logo and integers.
 
-;; Content is not centered by default. To center, set
+ ;; Content is not centered by default. To center, set
 (setq dashboard-center-content t)
 ;; vertically center content
 (setq dashboard-vertically-center-content t)
@@ -510,3 +566,27 @@
 ;; frames created with emacsclient -c as follows:
 (setq initial-buffer-choice (lambda () (get-buffer-create dashboard-buffer-name)))
 )
+
+(use-package markdown-mode
+  :ensure t
+  :mode ("\\.md\\'" . markdown-mode)
+  :init
+  (setq markdown-command "multimarkdown"))
+
+(setq ispell-program-name "D:/softwares/hunspell/bin/hunspell.exe") ;; Path to Hunspell binary
+
+
+(setq ispell-dictionary "en_US")  ;; Set default dictionary
+
+;; Set dictionary path
+
+(setq ispell-hunspell-dictionary-alist
+      '(("en_US" "[\0-\127]" "[^-\127]" "['-]" nil ("-d" "en_US") nil utf-8)))
+(setq ispell-dictionary "en_US")
+(setq ispell-extra-args '("-a" "-i" "utf-8"))
+(setq ispell-alternate-dictionary "d:/sofwares/hunspell-1.3.2-3-w32-bin/share/hunspell")
+(setenv "DICPATH" "d:/sofwares/hunspell-1.3.2-3-w32-bin/share/hunspell")
+
+;; Enable spell-checking in text modes
+(add-hook 'text-mode-hook 'flyspell-mode)   ;; Enable spell check in text modes
+(add-hook 'prog-mode-hook 'flyspell-prog-mode) ;; Spell check comments in code

@@ -1,4 +1,4 @@
-#+Title: Emacs Kickstarter
+# #+Title: Emacs Kickstarter
 #+Author: MiniApollo
 #+Description: A starting point for Gnu Emacs with good defaults and packages that most people may want to use.
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
@@ -13,6 +13,7 @@
   - [[#use-package][Use Package]]
   - [[#evil-mode][Evil Mode]]
   - [[#general-keybindings][General Keybindings]]
+  - [[#org-agenda-configuration][Org-agenda Configuration]]
   - [[#good-defaults][Good Defaults]]
 - [[#appearance][Appearance]]
   - [[#set-theme][Set Theme]]
@@ -226,7 +227,59 @@ To search and replace, use query-replace-regexp to replace one by one C-M-% (SPC
             "c" '(:ignore t :wk "Org Clock")
             "c i" '(org-clock-in :wk "Clock in")
             "c o" '(org-clock-out :wk "Clock out")
-            "c g" '(org-clock-goto :wk "Clock goto")))
+            "c g" '(org-clock-goto :wk "Clock goto"))
+
+      (start/leader-keys
+        "a" '(:ignore t :wk "Agenda")
+        "a a" '(org-agenda :wk "Agenda")
+        "a t" '(org-todo-list :wk "Todo list")
+        "a m" '(org-tags-view :wk "Match tags")
+        "a s" '(org-search-view :wk "Search")
+        "a c" '(org-calendar-goto-agenda :wk "Calendar goto agenda")
+        "a n" '(org-agenda-next :wk "Next agenda item")
+        "a p" '(org-agenda-previous :wk "Previous agenda item")
+        "a r" '(org-agenda-redo :wk "Redo agenda")
+        "a g" '(org-agenda-goto :wk "Goto agenda item")
+        "a k" '(org-agenda-kill :wk "Kill agenda item")
+        "a x" '(org-agenda-exit :wk "Exit agenda")
+        "a w" '(org-agenda-write :wk "Write agenda")
+        "a o" '(org-agenda-open-link :wk "Open agenda link")
+        "a f" '(org-agenda-follow :wk "Follow agenda link")
+        "a d" '(org-agenda-deadline :wk "Set deadline")
+        "a S" '(org-agenda-schedule :wk "Schedule item")
+        "a T" '(org-agenda-todo :wk "Toggle todo")
+        "a P" '(org-agenda-priority :wk "Set priority")
+        "a A" '(org-agenda-archive :wk "Archive item")
+        "a C" '(org-agenda-clock-in :wk "Clock in")
+        "a O" '(org-agenda-clock-out :wk "Clock out")
+        "a R" '(org-agenda-refile :wk "Refile item")
+        "a B" '(org-agenda-bulk-action :wk "Bulk action")
+        "a L" '(org-agenda-log-mode :wk "Toggle log mode")
+        "a E" '(org-agenda-export :wk "Export agenda")
+        "a I" '(org-agenda-clock-in :wk "Clock in")
+        "a U" '(org-agenda-undo :wk "Undo agenda action")
+        "a V" '(org-agenda-view-mode-dispatch :wk "View mode dispatch")
+        "a Y" '(org-agenda-yank :wk "Yank agenda item")
+        "a Z" '(org-agenda-zoom :wk "Zoom agenda")
+        "a 1" '(org-agenda-day-view :wk "Day view")
+        "a 2" '(org-agenda-week-view :wk "Week view")
+        "a 3" '(org-agenda-month-view :wk "Month view")
+        "a 4" '(org-agenda-year-view :wk "Year view")
+        "a 5" '(org-agenda-custom-time :wk "Custom time")
+        "a 6" '(org-agenda-clock-report :wk "Clock report")
+        "a 7" '(org-agenda-timeline :wk "Timeline")
+        "a 8" '(org-agenda-todo-list :wk "Todo list")
+        "a 9" '(org-agenda-tags-view :wk "Tags view")
+        "a 0" '(org-agenda-reset-view :wk "Reset view")
+    	)
+      )
+#+end_src
+
+** Org-agenda Configuration
+Essential configuration for org-agenda to work with your org-roam files.
+#+begin_src emacs-lisp
+    ;; Set org-agenda-files to include all org files from org-roam directory recursively
+    (setq org-agenda-files (directory-files-recursively "D:/Prasad/roam" "\\.org$"))
 #+end_src
 
 ** Good Defaults
@@ -303,7 +356,7 @@ With Emacs version 29, true transparency has been added.
 #+begin_src emacs-lisp
     (set-face-attribute 'default nil
                         ;; :font "JetBrains Mono" ;; Set your favorite type of font or download JetBrains Mono
-    					:font "MesloLGL Nerd Font"
+    					:font "cascadia mono"
                         :height 120
                         :weight 'bold)
     ;; This sets the default font on all graphical frames created after restarting Emacs.
@@ -850,7 +903,7 @@ Similar to spacemacs startup screen dashboard can provide startup screen.
 
 ** Spell check
 #+begin_src emacs-lisp
-    (setq ispell-program-name "D:/softwares/hunspell-1.3.2-3-w32-bin/bin/hunspell.exe") ;; Path to Hunspell binary
+    (setq ispell-program-name "D:/softwares/hunspell/bin/hunspell.exe") ;; Path to Hunspell binary
 
 
     (setq ispell-dictionary "en_US")  ;; Set default dictionary
@@ -869,3 +922,4 @@ Similar to spacemacs startup screen dashboard can provide startup screen.
     (add-hook 'prog-mode-hook 'flyspell-prog-mode) ;; Spell check comments in code
      
 #+end_src
+
