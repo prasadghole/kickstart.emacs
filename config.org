@@ -1,3 +1,4 @@
+
 # #+Title: Emacs Kickstarter
 #+Author: MiniApollo
 #+Description: A starting point for Gnu Emacs with good defaults and packages that most people may want to use.
@@ -46,6 +47,7 @@
   - [[#dashboard][Dashboard]]
   - [[#markdown][Markdown]]
   - [[#spell-check][Spell check]]
+  - [[#mermaid-mode][Mermaid mode]]
 
 * Introduction
 #+begin_src emacs-lisp
@@ -302,7 +304,7 @@ Essential configuration for org-agenda to work with your org-roam files.
       ;;(recentf-mode t) ;; Enable recent file mode
 
       ;;(global-visual-line-mode t)           ;; Enable truncated lines
-      ;;(display-line-numbers-type 'relative) ;; Relative line numbers
+      (display-line-numbers-type 'relative) ;; Relative line numbers
       (global-display-line-numbers-mode t)  ;; Display line numbers
 
       (mouse-wheel-progressive-speed nil) ;; Disable progressive speed when scrolling
@@ -475,20 +477,22 @@ Once you've used it for a bit, you'll understand why people love it. Even readin
 For example, this document is effectively the source code and descriptions bound into the one document,
 much like the literate programming ideas that Donald Knuth made famous.
 #+begin_src emacs-lisp
-    (use-package org
-      :ensure nil
-      :custom
-      (org-edit-src-content-indentation 4) ;; Set src block automatic indent to 4 instead of 2.
+        (use-package org
+          :ensure nil
+          :custom
+          (org-edit-src-content-indentation 4) ;; Set src block automatic indent to 4 instead of 2.
+          :config 
+    	  (setq org-agenda-files '("d:/Prasad/roam/agenda.org"))
 
-      :hook
-      (org-mode . org-indent-mode) ;; Indent text
-      ;; The following prevents <> from auto-pairing when electric-pair-mode is on.
-      ;; Otherwise, org-tempo is broken when you try to <s TAB...
-      ;;(org-mode . (lambda ()
-      ;;              (setq-local electric-pair-inhibit-predicate
-      ;;                          `(lambda (c)
-      ;;                             (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
-      )
+          :hook
+          (org-mode . org-indent-mode) ;; Indent text
+          ;; The following prevents <> from auto-pairing when electric-pair-mode is on.
+          ;; Otherwise, org-tempo is broken when you try to <s TAB...
+          ;;(org-mode . (lambda ()
+          ;;              (setq-local electric-pair-inhibit-predicate
+          ;;                          `(lambda (c)
+          ;;                             (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+          )
 #+end_src
 
 **** Table of Contents
@@ -896,26 +900,21 @@ Similar to spacemacs startup screen dashboard can provide startup screen.
 (use-package markdown-mode
   :ensure t
   :mode ("\\.md\\'" . markdown-mode)
-  :init
-  (setq markdown-command "multimarkdown"))
-
+ (setq markdown-command "multimarkdown"))
 #+end_src
 
 ** Spell check
 #+begin_src emacs-lisp
     (setq ispell-program-name "D:/softwares/hunspell/bin/hunspell.exe") ;; Path to Hunspell binary
-
-
     (setq ispell-dictionary "en_US")  ;; Set default dictionary
 
     ;; Set dictionary path
 
     (setq ispell-hunspell-dictionary-alist
           '(("en_US" "[\0-\127]" "[^-\127]" "['-]" nil ("-d" "en_US") nil utf-8)))
-    (setq ispell-dictionary "en_US")
-    (setq ispell-extra-args '("-a" "-i" "utf-8"))
-    (setq ispell-alternate-dictionary "d:/sofwares/hunspell-1.3.2-3-w32-bin/share/hunspell")
-    (setenv "DICPATH" "d:/sofwares/hunspell-1.3.2-3-w32-bin/share/hunspell")
+    (setq ispell-extra-args '("--encoding=utf-8"))
+    (setq ispell-alternate-dictionary "d:/sofwares/hunspell/share/hunspell")
+    (setenv "DICPATH" "d:/sofwares/hunspell/share/hunspell")
 
     ;; Enable spell-checking in text modes
     (add-hook 'text-mode-hook 'flyspell-mode)   ;; Enable spell check in text modes
@@ -923,3 +922,12 @@ Similar to spacemacs startup screen dashboard can provide startup screen.
      
 #+end_src
 
+
+** Mermaid mode
+
+https://github.com/mermaid-js/mermaid-cli
+#+begin_src emacs-lisp
+    (use-package mermaid-mode
+      :ensure t
+      :mode "\\.mmd\\'")
+#+end_src
