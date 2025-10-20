@@ -45,7 +45,6 @@
 - [[#runtime-performance][Runtime Performance]]
 - [[#additional-kickstart-packages][Additional Kickstart packages]]
   - [[#dashboard][Dashboard]]
-  - [[#markdown][Markdown]]
   - [[#spell-check][Spell check]]
   - [[#mermaid-mode][Mermaid mode]]
 
@@ -221,7 +220,7 @@ To search and replace, use query-replace-regexp to replace one by one C-M-% (SPC
         "r" '(:ignore t :wk "Org Roam")
         "r i" '(org-roam-node-insert :wk "Insert node")
         "r t" '(org-roam-tag-add :wk "Insert tag")
-        "r d" '(org-roam-dailies-find-today :wk "dailies find today ")
+        "r d" '(org-roam-dailies-goto-today :wk "dailies find today ")
         "r D" '(org-roam-dailies-capture-today :wk "dailies caputure today ")
         "r f" '(org-roam-node-find :wk "Find node"))
 
@@ -548,7 +547,19 @@ Export org blogs to my hugo static site.
 *** Other org and org babel exporters
 #+begin_src emacs-lisp
     (use-package ox-pandoc)
-    (use-package ox-reveal)
+    (use-package ox-reveal
+      :after org
+      :config
+      ;; Path to your local reveal.js installation
+      ;; (setq org-reveal-root "file:///D:/Sandbox/reveal.js")
+      ;; we will set this up in actual org file
+      ;;(setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
+      
+      ;; Optional: enable syntax highlighting in code blocks
+      (setq org-html-htmlize-output-type 'css)
+      (setq org-reveal-title-slide nil) ;; skip title slide if you want custom
+    )
+
 #+end_src
 *** Org download
 Download images to org document using drag and drop from internet.
@@ -895,13 +906,7 @@ Similar to spacemacs startup screen dashboard can provide startup screen.
     )
 #+end_src
 
-** Markdown
-#+begin_src emacs-lisp
-(use-package markdown-mode
-  :ensure t
-  :mode ("\\.md\\'" . markdown-mode)
- (setq markdown-command "multimarkdown"))
-#+end_src
+
 
 ** Spell check
 #+begin_src emacs-lisp
@@ -931,3 +936,4 @@ https://github.com/mermaid-js/mermaid-cli
       :ensure t
       :mode "\\.mmd\\'")
 #+end_src
+
