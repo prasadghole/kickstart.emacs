@@ -553,7 +553,7 @@ Export org blogs to my hugo static site.
       ;; Path to your local reveal.js installation
       ;; (setq org-reveal-root "file:///D:/Sandbox/reveal.js")
       ;; we will set this up in actual org file
-      ;;(setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
+      (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js")
       
       ;; Optional: enable syntax highlighting in code blocks
       (setq org-html-htmlize-output-type 'css)
